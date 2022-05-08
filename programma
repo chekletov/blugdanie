@@ -1,0 +1,81 @@
+import random
+
+import numpy as np
+
+s1 = 0
+
+s2 = 0
+
+s3 = 0
+
+s4 = 0
+
+n = int(input())
+
+for i in range(100):
+
+a = np.zeros((2 * n + 3, 2 * n + 3), dtype=np.int16)
+
+x = n + 1
+
+y = n + 1
+
+a[x][y] += 1
+
+for j in range(n):
+
+k = random.randint(0, 3)
+
+x += (k % 2) * (2 - k)
+
+y += (1 - (k % 2)) * (1 - k)
+
+a[x][y] += 1
+
+for p in range(2 * n + 1):
+
+for q in range(2 * n + 1):
+
+for r in range(a[p + 1][q + 1]):
+
+count = 0
+
+if a[p + 1][q + 2] > 0:
+
+count += 1
+
+if a[p + 2][q + 1] > 0:
+
+count += 1
+
+if a[p + 1][q] > 0:
+
+count += 1
+
+if a[p][q + 1] > 0:
+
+count += 1
+
+if count == 1:
+
+s1 += 1
+
+if count == 2:
+
+s2 += 1
+
+if count == 3:
+
+s3 += 1
+
+if count == 4:
+
+s4 += 1
+
+print((s1 / (n + 1)) / 100)
+
+print((s2 / (n + 1)) / 100)
+
+print((s3 / (n + 1)) / 100)
+
+print((s4 / (n + 1)) / 100)
