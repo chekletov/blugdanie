@@ -1,81 +1,102 @@
+import math
 import random
-
 import numpy as np
 
 s1 = 0
-
 s2 = 0
-
 s3 = 0
-
 s4 = 0
+
+a1 = np.zeros((100), dtype=np.float16)
+a2 = np.zeros((100), dtype=np.float16)
+a3 = np.zeros((100), dtype=np.float16)
+a4 = np.zeros((100), dtype=np.float16)
 
 n = int(input())
 
 for i in range(100):
+    a = np.zeros((2 * n + 3, 2 * n + 3), dtype=np.int16)
 
-a = np.zeros((2 * n + 3, 2 * n + 3), dtype=np.int16)
+    x = n + 1
+    y = n + 1
 
-x = n + 1
+    a[x][y] += 1
 
-y = n + 1
+    for j in range(n):
+        k = random.randint(0, 3)
 
-a[x][y] += 1
+        x += (k % 2) * (2 - k)
+        y += (1 - (k % 2)) * (1 - k)
 
-for j in range(n):
+        a[x][y] += 1
 
-k = random.randint(0, 3)
+    for p in range(2 * n + 1):
+        for q in range(2 * n + 1):
+            for r in range(a[p + 1][q + 1]):
+                count = 0
 
-x += (k % 2) * (2 - k)
+                if a[p + 1][q + 2] > 0:
+                    count += 1
+                if a[p + 2][q + 1] > 0:
+                    count += 1
+                if a[p + 1][q] > 0:
+                    count += 1
+                if a[p][q + 1] > 0:
+                    count += 1
 
-y += (1 - (k % 2)) * (1 - k)
-
-a[x][y] += 1
-
-for p in range(2 * n + 1):
-
-for q in range(2 * n + 1):
-
-for r in range(a[p + 1][q + 1]):
-
-count = 0
-
-if a[p + 1][q + 2] > 0:
-
-count += 1
-
-if a[p + 2][q + 1] > 0:
-
-count += 1
-
-if a[p + 1][q] > 0:
-
-count += 1
-
-if a[p][q + 1] > 0:
-
-count += 1
-
-if count == 1:
-
-s1 += 1
-
-if count == 2:
-
-s2 += 1
-
-if count == 3:
-
-s3 += 1
-
-if count == 4:
-
-s4 += 1
+                if count == 1:
+                    s1 += 1
+                    a1[i] += 1 / (n + 1)
+                if count == 2:
+                    s2 += 1
+                    a2[i] += 1 / (n + 1)
+                if count == 3:
+                    s3 += 1
+                    a3[i] += 1 / (n + 1)
+                if count == 4:
+                    s4 += 1
+                    a4[i] += 1 / (n + 1)
 
 print((s1 / (n + 1)) / 100)
-
 print((s2 / (n + 1)) / 100)
-
 print((s3 / (n + 1)) / 100)
-
 print((s4 / (n + 1)) / 100)
+
+print(" ")
+
+sum1 = 0
+sum2 = 0
+sum3 = 0
+sum4 = 0
+
+for i in range(100):
+    sum1 += a1[i]
+    sum2 += a2[i]
+    sum3 += a3[i]
+    sum4 += a4[i]
+
+sum1 /= 100
+sum2 /= 100
+sum3 /= 100
+sum4 /= 100
+
+sr1 = sum1
+sr2 = sum2
+sr3 = sum3
+sr4 = sum4
+
+sum1 = 0
+sum2 = 0
+sum3 = 0
+sum4 = 0
+
+for i in range(100):
+    sum1 += (a1[i] - sr1) * (a1[i] - sr1)
+    sum2 += (a2[i] - sr2) * (a2[i] - sr2)
+    sum3 += (a3[i] - sr3) * (a3[i] - sr3)
+    sum4 += (a4[i] - sr4) * (a4[i] - sr4)
+
+print(math.sqrt(sum1 / (100 - 1)))
+print(math.sqrt(sum2 / (100 - 1)))
+print(math.sqrt(sum3 / (100 - 1)))
+print(math.sqrt(sum4 / (100 - 1)))
